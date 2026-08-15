@@ -1,0 +1,29 @@
+---
+description: SizeKit product identity, philosophy, positioning, and current MVP stage
+alwaysApply: true
+---
+
+# SizeKit — Product
+
+**Name:** SizeKit  
+**Tagline:** Make your files fit.  
+**Stack:** React Native + Expo SDK 57 + TypeScript (Android first, iOS-compatible)  
+**Promise:** Take any photo/document and make it fit an exact upload requirement.
+
+## Positioning
+
+Not "just another image compressor." Win at exact requirements: under 50/200 KB, exact dimensions, JPG/PNG only, passport/visa/job/university specs.
+
+Prefer requirement-first UX ("US Visa Photo") over raw technical knobs. Keep advanced/custom controls available.
+
+## Philosophy
+
+- Hide compression, EXIF, formats, DPI from users — make sensible defaults.
+- Fast, offline, privacy-first: files stay on device.
+- Simple primary flow: open → tool/requirement → pick file → process → preview → save/share.
+
+## Current stage: MVP Foundation
+
+Build only: Home → Compress → picker → exact-size compression → preview → save/share → basic presets.
+
+Do not implement V1.1/future features (batch, history, PDF tools, AI, etc.) unless explicitly requested.

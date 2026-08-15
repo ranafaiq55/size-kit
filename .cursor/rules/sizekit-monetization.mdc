@@ -1,0 +1,25 @@
+---
+description: SizeKit monetization — free+ads and lifetime Pro; no subscriptions without approval
+alwaysApply: true
+---
+
+# SizeKit — Monetization
+
+**Model:** Free + ads, plus a **one-time lifetime Pro** purchase (~$7.99, market-testable).  
+**Do NOT** add monthly subscriptions unless the product owner explicitly changes strategy.
+
+## Ads
+
+- Isolate behind an `AdService` abstraction; never scatter provider SDKs in feature code
+- Never interrupt critical flows or make core tools unusable
+- No fake buttons, dark patterns, or ads that look like system UI
+
+## Pro
+
+- Isolate entitlement behind a simple abstraction (`UserEntitlements.isPro` / purchase service)
+- Don't overbuild billing before purchase flow is implemented
+- Pro candidates: no ads, unlimited exact-size, batch, advanced presets/PDF, metadata removal
+
+## Business constraints
+
+Target ~$1,500+/month revenue without proportional infra cost. Prefer options that stay offline, private, low-cost, and maintainable. No dark patterns to force upgrades.

@@ -1,0 +1,37 @@
+---
+description: SizeKit engineering practices — UX, deps, errors, performance, agent workflow
+alwaysApply: true
+---
+
+# SizeKit — Engineering
+
+## Before coding
+
+1. Inspect existing code; reuse components/utilities.
+2. Read Expo SDK 57 docs (`https://docs.expo.dev/versions/v57.0.0/`) before Expo APIs.
+3. Smallest clean change; no unrelated rewrites.
+4. Ask before major architecture decisions; proceed on small obvious details.
+
+## UI / code
+
+- Minimal deps; no large UI frameworks without clear need
+- Reusable components; focused screens (no monoliths)
+- Simple nav; don't over-engineer early
+- User-facing errors must be plain language (never raw exceptions)
+- Guard memory: large/4K images, cleanup, avoid loading multiple full-res bitmaps
+
+## Dependencies
+
+Before installing: needed? Expo already provides it? Maintained? SDK 57 compatible? Native complexity? Recurring cost? Prefer fewer packages.
+
+## Security
+
+Never commit secrets, keys, tokens, or signing material. Only claim "files stay on device" when true.
+
+## Do not auto-add
+
+Analytics, ads SDKs, or billing SDKs without discussion. When adding ads/Pro later, keep them behind service abstractions.
+
+## Git
+
+Clear, focused commits (`feat:`, `fix:`, `refactor:`). No giant unrelated commits. Only commit when the user asks.

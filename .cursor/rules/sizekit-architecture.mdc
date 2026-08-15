@@ -1,0 +1,38 @@
+---
+description: SizeKit hard architecture constraints — offline, no backend, no paid APIs, privacy
+alwaysApply: true
+---
+
+# SizeKit — Architecture Constraints
+
+## Forbidden unless product owner explicitly approves
+
+- Backend, database, user accounts, cloud storage, server-side processing
+- Firebase, Supabase, AWS, Vercel backends, Cloudinary, ImageKit, Uploadcare
+- Any paid image-processing or paid AI API (OpenAI, Claude, Gemini, etc.)
+- Recurring infrastructure or SaaS costs
+
+## Required
+
+- Core features work offline on-device
+- Prefer Expo/RN APIs, open-source libs, deterministic local algorithms
+- Never upload user files; never log image contents
+- Clean up temp files; handle permissions with clear explanations
+- Presets live in structured config (not hardcoded official claims without verification)
+
+```typescript
+interface RequirementPreset {
+  id: string;
+  name: string;
+  category: string;
+  width?: number;
+  height?: number;
+  maxFileSizeBytes?: number;
+  allowedFormats?: string[];
+  description?: string;
+}
+```
+
+## Differentiator
+
+Exact target file size (e.g. 200 KB) without manual JPEG-quality tinkering. If exact size is impossible, return closest practical result and explain clearly.
