@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import type { RequirementPreset } from '../constants/tools';
+import type { RequirementListItem } from '../constants/tools';
 import { colors, radii, scale, spacing, typography } from '../theme';
 
 type RequirementChipProps = {
-  preset: RequirementPreset;
+  preset: RequirementListItem;
   onPress: () => void;
 };
 

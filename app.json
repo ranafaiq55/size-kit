@@ -7,11 +7,17 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sizekit.app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "SizeKit needs photo access to compress and resize your images on your device. Photos are never uploaded.",
+        "NSPhotoLibraryAddUsageDescription": "SizeKit needs permission to save compressed photos to your gallery."
+      }
     },
     "android": {
+      "package": "com.sizekit.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0F1C2E",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -20,6 +26,24 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "SizeKit needs photo access to compress and resize your images on your device. Photos are never uploaded.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "SizeKit needs photo access to save compressed images to your gallery.",
+          "savePhotosPermission": "SizeKit needs permission to save compressed photos to your gallery.",
+          "isAccessMediaLocationEnabled": false
+        }
+      ]
+    ]
   }
 }

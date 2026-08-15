@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
+import { REQUIREMENT_PRESETS } from './presets';
 import type { ToolRouteName } from '../types/navigation';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
@@ -13,11 +14,12 @@ export type ToolDefinition = {
   icon: IconName;
 };
 
-export type RequirementPreset = {
+export type RequirementListItem = {
   id: string;
   title: string;
   subtitle: string;
   icon: IconName;
+  maxFileSizeBytes?: number;
 };
 
 export const PRIMARY_TOOL: ToolDefinition = {
@@ -59,29 +61,11 @@ export const SECONDARY_TOOLS: ToolDefinition[] = [
   },
 ];
 
-export const POPULAR_REQUIREMENTS: RequirementPreset[] = [
-  {
-    id: 'cnic',
-    title: 'CNIC',
-    subtitle: 'ID photo specs',
-    icon: 'id-card-outline',
-  },
-  {
-    id: 'visa',
-    title: 'Visa',
-    subtitle: 'Passport photo',
-    icon: 'airplane-outline',
-  },
-  {
-    id: 'job',
-    title: 'Job Application',
-    subtitle: 'Common size limits',
-    icon: 'briefcase-outline',
-  },
-  {
-    id: 'university',
-    title: 'University',
-    subtitle: 'Admission photos',
-    icon: 'school-outline',
-  },
-];
+export const POPULAR_REQUIREMENTS: RequirementListItem[] =
+  REQUIREMENT_PRESETS.map((preset) => ({
+    id: preset.id,
+    title: preset.name,
+    subtitle: preset.description ?? preset.category,
+    icon: preset.icon,
+    maxFileSizeBytes: preset.maxFileSizeBytes,
+  }));

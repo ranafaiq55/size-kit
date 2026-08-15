@@ -2,14 +2,14 @@ import { StyleSheet, View } from 'react-native';
 
 import {
   POPULAR_REQUIREMENTS,
-  type RequirementPreset,
+  type RequirementListItem,
 } from '../constants/tools';
 import { spacing } from '../theme';
 import { RequirementChip } from './RequirementChip';
 import { SectionHeader } from './SectionHeader';
 
 type PopularRequirementsProps = {
-  onSelect: (preset: RequirementPreset) => void;
+  onSelect: (preset: RequirementListItem) => void;
 };
 
 export function PopularRequirements({ onSelect }: PopularRequirementsProps) {

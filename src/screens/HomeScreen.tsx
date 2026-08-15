@@ -24,7 +24,7 @@ export function HomeScreen({ navigation }: Props) {
         <View style={[styles.atmosphere, { height: insets.top + scale(180) }]} />
       }
     >
-      <AppHeader />
+      <AppHeader onPressSettings={() => navigation.navigate('Settings')} />
       <PrimaryToolCard
         tool={PRIMARY_TOOL}
         onPress={() => navigation.navigate('CompressPhoto')}
@@ -35,6 +35,7 @@ export function HomeScreen({ navigation }: Props) {
           navigation.navigate('CompressPhoto', {
             presetId: preset.id,
             presetTitle: preset.title,
+            maxFileSizeBytes: preset.maxFileSizeBytes,
           })
         }
       />
