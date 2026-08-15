@@ -6,7 +6,7 @@ import { getUserEntitlements } from '../services/entitlements';
 import { colors, radii, spacing, typography } from '../theme';
 
 const PRIVACY_POLICY_URL =
-  'https://ranafaiq55.github.io/size-kit/privacy';
+  'https://ranafaiq55.github.io/size-kit/privacy/';
 
 export function SettingsScreen() {
   const { isPro } = getUserEntitlements();
