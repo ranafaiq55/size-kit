@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { ZoomableImage } from './ZoomableImage';
 import { radii, scale, spacing, typography } from '../theme';
 
 type ImagePreviewModalProps = {
@@ -10,7 +12,7 @@ type ImagePreviewModalProps = {
   onClose: () => void;
 };
 
-/** Full-screen look at a photo before saving. */
+/** Full-screen look at a photo with pinch / double-tap zoom. */
 export function ImagePreviewModal({
   uri,
   caption,
@@ -26,15 +28,10 @@ export function ImagePreviewModal({
       statusBarTranslucent
       onRequestClose={onClose}
     >
-      <View style={styles.backdrop}>
-        <Pressable
-          style={StyleSheet.absoluteFill}
-          accessibilityRole="button"
-          accessibilityLabel="Close preview"
-          onPress={onClose}
-        />
-
+      {/* Modal hosts its own root so gestures work above the app tree. */}
+      <GestureHandlerRootView style={styles.backdrop}>
         <View style={[styles.topBar, { paddingTop: insets.top + spacing.md }]}>
+          <Text style={styles.hint}>Pinch or double-tap to zoom</Text>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Close preview"
@@ -49,13 +46,7 @@ export function ImagePreviewModal({
           </Pressable>
         </View>
 
-        {uri ? (
-          <Image
-            source={{ uri }}
-            style={styles.image}
-            accessibilityIgnoresInvertColors
-          />
-        ) : null}
+        {uri ? <ZoomableImage uri={uri} /> : null}
 
         {caption ? (
           <Text
@@ -64,7 +55,7 @@ export function ImagePreviewModal({
             {caption}
           </Text>
         ) : null}
-      </View>
+      </GestureHandlerRootView>
     </Modal>
   );
 }
@@ -77,7 +68,15 @@ const styles = StyleSheet.create({
   topBar: {
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.sm,
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
+  hint: {
+    ...typography.caption,
+    color: 'rgba(255,255,255,0.55)',
+    flex: 1,
   },
   closeButton: {
     width: scale(40),
@@ -89,11 +88,6 @@ const styles = StyleSheet.create({
   },
   closeButtonPressed: {
     backgroundColor: 'rgba(255,255,255,0.24)',
-  },
-  image: {
-    flex: 1,
-    width: '100%',
-    resizeMode: 'contain',
   },
   caption: {
     ...typography.caption,
