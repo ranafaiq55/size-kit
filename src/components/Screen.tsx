@@ -19,6 +19,8 @@ type ScreenProps = {
   centered?: boolean;
   /** Rendered behind the content, outside the safe area padding. */
   decoration?: ReactNode;
+  /** Pinned above the scroll area; stays visible while the content scrolls. */
+  header?: ReactNode;
   contentStyle?: StyleProp<ViewStyle>;
 };
 
@@ -28,17 +30,23 @@ export function Screen({
   scrollable = false,
   centered = false,
   decoration,
+  header,
   contentStyle,
 }: ScreenProps) {
   const insets = useSafeAreaInsets();
 
   // Android runs edge-to-edge, so every edge (including cutouts and gesture
   // bars in landscape) has to be padded by the app itself.
-  const safeAreaPadding: ViewStyle = {
-    paddingTop: (withTopInset ? insets.top : 0) + spacing.lg,
-    paddingBottom: insets.bottom + spacing.xl,
+  const horizontalPadding: ViewStyle = {
     paddingLeft: insets.left + layout.screenPadding,
     paddingRight: insets.right + layout.screenPadding,
+  };
+
+  const safeAreaPadding: ViewStyle = {
+    // A pinned header already clears the status bar for the whole screen.
+    paddingTop: header ? spacing.lg : (withTopInset ? insets.top : 0) + spacing.lg,
+    paddingBottom: insets.bottom + spacing.xl,
+    ...horizontalPadding,
   };
 
   const content = (
@@ -50,6 +58,17 @@ export function Screen({
   return (
     <View style={styles.root}>
       {decoration}
+      {header ? (
+        <View
+          style={[
+            styles.header,
+            horizontalPadding,
+            { paddingTop: insets.top + spacing.sm },
+          ]}
+        >
+          <View style={styles.headerInner}>{header}</View>
+        </View>
+      ) : null}
       {scrollable ? (
         <ScrollView
           style={styles.fill}
@@ -75,6 +94,17 @@ const styles = StyleSheet.create({
   },
   fill: {
     flex: 1,
+  },
+  header: {
+    backgroundColor: colors.backgroundWarm,
+    paddingBottom: spacing.md,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+  },
+  headerInner: {
+    width: '100%',
+    maxWidth: layout.maxContentWidth,
+    alignSelf: 'center',
   },
   scrollContent: {
     flexGrow: 1,

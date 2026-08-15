@@ -1,9 +1,11 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useState } from 'react';
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { AdPlaceholder } from '../components/AdPlaceholder';
+import { BeforeAfterPreview } from '../components/BeforeAfterPreview';
+import { ImagePreviewModal } from '../components/ImagePreviewModal';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Screen } from '../components/Screen';
 import { adService } from '../services/adService';
@@ -17,6 +19,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CompressResult'>;
 
 export function CompressResultScreen({ navigation, route }: Props) {
   const {
+    originalUri,
     originalBytes,
     resultUri,
     resultBytes,
@@ -30,6 +33,9 @@ export function CompressResultScreen({ navigation, route }: Props) {
   const [isSaving, setIsSaving] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [preview, setPreview] = useState<{ uri: string; caption: string } | null>(
+    null,
+  );
   const canSaveToGallery = isGallerySaveAvailable();
 
   useEffect(() => {
@@ -101,7 +107,13 @@ export function CompressResultScreen({ navigation, route }: Props) {
 
   return (
     <Screen scrollable>
-      <Image source={{ uri: resultUri }} style={styles.preview} />
+      <BeforeAfterPreview
+        originalUri={originalUri}
+        originalBytes={originalBytes}
+        resultUri={resultUri}
+        resultBytes={resultBytes}
+        onPressImage={(uri, caption) => setPreview({ uri, caption })}
+      />
 
       <View style={styles.stats}>
         <Stat label="Original" value={formatFileSize(originalBytes)} />
@@ -152,6 +164,12 @@ export function CompressResultScreen({ navigation, route }: Props) {
       />
 
       <AdPlaceholder placement="result_banner" />
+
+      <ImagePreviewModal
+        uri={preview?.uri ?? null}
+        caption={preview?.caption}
+        onClose={() => setPreview(null)}
+      />
     </Screen>
   );
 }
@@ -176,14 +194,6 @@ function Stat({
 }
 
 const styles = StyleSheet.create({
-  preview: {
-    width: '100%',
-    height: scale(260),
-    borderRadius: radii.lg,
-    backgroundColor: colors.surfaceMuted,
-    resizeMode: 'contain',
-    marginBottom: spacing.lg,
-  },
   stats: {
     flexDirection: 'row',
     gap: spacing.sm,

@@ -4,12 +4,14 @@ import {
   Alert,
   Image,
   Linking,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
 
+import { ImagePreviewModal } from '../components/ImagePreviewModal';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { Screen } from '../components/Screen';
 import { SectionHeader } from '../components/SectionHeader';
@@ -49,6 +51,7 @@ export function CompressPhotoScreen({ navigation, route }: Props) {
   const [customText, setCustomText] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -160,7 +163,7 @@ export function CompressPhotoScreen({ navigation, route }: Props) {
     <Screen scrollable>
       <Text style={styles.lead}>
         Pick a photo and choose the file size you need. SizeKit compresses it
-        on your device — nothing is uploaded.
+        on your device, nothing is uploaded.
       </Text>
 
       {preset?.description ? (
@@ -171,7 +174,18 @@ export function CompressPhotoScreen({ navigation, route }: Props) {
 
       <View style={styles.pickerCard}>
         {image ? (
-          <Image source={{ uri: image.uri }} style={styles.preview} />
+          <Pressable
+            accessibilityRole="imagebutton"
+            accessibilityLabel="View selected photo full screen"
+            onPress={() => setIsPreviewOpen(true)}
+            style={({ pressed }) => pressed && styles.previewPressed}
+          >
+            <Image
+              source={{ uri: image.uri }}
+              style={styles.preview}
+              accessibilityIgnoresInvertColors
+            />
+          </Pressable>
         ) : (
           <View style={styles.previewPlaceholder}>
             <Text style={styles.placeholderText}>No photo selected</Text>
@@ -245,6 +259,12 @@ export function CompressPhotoScreen({ navigation, route }: Props) {
         loading={isProcessing}
         style={styles.compressButton}
       />
+
+      <ImagePreviewModal
+        uri={isPreviewOpen && image ? image.uri : null}
+        caption={image ? `Original · ${formatFileSize(image.bytes)}` : undefined}
+        onClose={() => setIsPreviewOpen(false)}
+      />
     </Screen>
   );
 }
@@ -280,6 +300,9 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     backgroundColor: colors.surfaceMuted,
     resizeMode: 'contain',
+  },
+  previewPressed: {
+    opacity: 0.92,
   },
   previewPlaceholder: {
     width: '100%',

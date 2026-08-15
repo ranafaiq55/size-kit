@@ -1,66 +1,62 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { colors, radii, scale, spacing, typography } from '../theme';
 
 type AppHeaderProps = {
   title?: string;
-  tagline?: string;
   onPressSettings?: () => void;
 };
 
-export function AppHeader({
-  title = 'SizeKit',
-  tagline = 'Make your files fit.',
-  onPressSettings,
-}: AppHeaderProps) {
+/** Compact brand bar. Pinned via the `header` prop on `Screen`. */
+export function AppHeader({ title = 'SizeKit', onPressSettings }: AppHeaderProps) {
   return (
-    <View style={styles.container} accessibilityRole="header">
-      <View style={styles.brandRow}>
-        <View style={styles.mark}>
-          <View style={styles.markInner} />
-        </View>
-        <Text style={styles.title} accessibilityRole="header">
-          {title}
-        </Text>
-        {onPressSettings ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Settings"
-            onPress={onPressSettings}
-            hitSlop={12}
-            style={styles.settingsButton}
-          >
-            <Text style={styles.settingsLabel}>Settings</Text>
-          </Pressable>
-        ) : null}
+    <View style={styles.brandRow} accessibilityRole="header">
+      <View style={styles.mark}>
+        <View style={styles.markInner} />
       </View>
-      <Text style={styles.tagline}>{tagline}</Text>
+      <Text style={styles.title} numberOfLines={1}>
+        {title}
+      </Text>
+      {onPressSettings ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Settings"
+          onPress={onPressSettings}
+          hitSlop={10}
+          style={({ pressed }) => [
+            styles.settingsButton,
+            pressed && styles.settingsButtonPressed,
+          ]}
+        >
+          <Ionicons
+            name="settings-outline"
+            size={scale(20)}
+            color={colors.inkSecondary}
+          />
+        </Pressable>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xl,
-    gap: spacing.sm,
-  },
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
   },
   mark: {
-    width: scale(36),
-    height: scale(36),
+    width: scale(34),
+    height: scale(34),
     borderRadius: radii.sm,
     backgroundColor: colors.primaryCard,
     alignItems: 'center',
     justifyContent: 'center',
   },
   markInner: {
-    width: scale(14),
-    height: scale(14),
+    width: scale(13),
+    height: scale(13),
     borderRadius: scale(4),
     borderWidth: 2,
     borderColor: colors.accentMid,
@@ -68,19 +64,21 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.brand,
+    fontSize: scale(22),
+    letterSpacing: -0.4,
     flex: 1,
   },
   settingsButton: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
+    width: scale(38),
+    height: scale(38),
+    borderRadius: radii.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
   },
-  settingsLabel: {
-    ...typography.caption,
-    color: colors.accentDark,
-    fontWeight: '600',
-  },
-  tagline: {
-    ...typography.tagline,
-    paddingLeft: 2,
+  settingsButtonPressed: {
+    backgroundColor: colors.surfaceMuted,
   },
 });
