@@ -29,7 +29,7 @@ export async function saveImageToGallery(uri: string): Promise<SaveImageResult> 
       return { status: 'permission_denied' };
     }
 
-    await MediaLibrary.saveToLibraryAsync(uri);
+    await MediaLibrary.Asset.create(uri);
     return { status: 'saved' };
   } catch {
     return { status: 'error' };

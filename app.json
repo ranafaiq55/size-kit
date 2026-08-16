@@ -43,6 +43,14 @@
           "savePhotosPermission": "SizeKit needs permission to save compressed photos to your gallery.",
           "isAccessMediaLocationEnabled": false
         }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "backgroundColor": "#0F1C2E",
+          "imageWidth": 240
+        }
       ]
     ]
   }
